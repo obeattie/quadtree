@@ -79,12 +79,19 @@ func New(boundary *AABB, depth int, parent *QuadTree) *QuadTree {
 // NewAABB creates an axis aligned bounding box. It takes the center and half
 // point.
 func NewAABB(center, half *Point) *AABB {
-	return &AABB{center, half}
+	return &AABB{
+		center: center,
+		half:   half,
+	}
 }
 
 // NewPoint generates a new *Point struct.
 func NewPoint(x, y float64, data interface{}) *Point {
-	return &Point{x, y, data}
+	return &Point{
+		x:    x,
+		y:    y,
+		data: data,
+	}
 }
 
 // ContainsPoint checks whether the point provided resides within the axis
@@ -139,7 +146,10 @@ func (p *Point) Data() interface{} {
 // argument of metres as float64.
 func (p *Point) HalfPoint(m float64) *Point {
 	p2 := boundaryPoint(p, m)
-	return &Point{p2.x - p.x, p2.y - p.y, nil}
+	return &Point{
+		x: p2.x - p.x,
+		y: p2.y - p.y,
+	}
 }
 
 func (qt *QuadTree) divide() {
@@ -148,29 +158,53 @@ func (qt *QuadTree) divide() {
 	}
 
 	bb := &AABB{
-		&Point{qt.boundary.center.x - qt.boundary.half.x/2, qt.boundary.center.y + qt.boundary.half.y/2, nil},
-		&Point{qt.boundary.half.x / 2, qt.boundary.half.y / 2, nil},
+		&Point{
+			x: qt.boundary.center.x - qt.boundary.half.x/2,
+			y: qt.boundary.center.y + qt.boundary.half.y/2,
+		},
+		&Point{
+			x: qt.boundary.half.x / 2,
+			y: qt.boundary.half.y / 2,
+		},
 	}
 
 	qt.nodes[0] = New(bb, qt.depth, qt)
 
 	bb = &AABB{
-		&Point{qt.boundary.center.x + qt.boundary.half.x/2, qt.boundary.center.y + qt.boundary.half.y/2, nil},
-		&Point{qt.boundary.half.x / 2, qt.boundary.half.y / 2, nil},
+		&Point{
+			x: qt.boundary.center.x + qt.boundary.half.x/2,
+			y: qt.boundary.center.y + qt.boundary.half.y/2,
+		},
+		&Point{
+			x: qt.boundary.half.x / 2,
+			y: qt.boundary.half.y / 2,
+		},
 	}
 
 	qt.nodes[1] = New(bb, qt.depth, qt)
 
 	bb = &AABB{
-		&Point{qt.boundary.center.x - qt.boundary.half.x/2, qt.boundary.center.y - qt.boundary.half.y/2, nil},
-		&Point{qt.boundary.half.x / 2, qt.boundary.half.y / 2, nil},
+		&Point{
+			x: qt.boundary.center.x - qt.boundary.half.x/2,
+			y: qt.boundary.center.y - qt.boundary.half.y/2,
+		},
+		&Point{
+			x: qt.boundary.half.x / 2,
+			y: qt.boundary.half.y / 2,
+		},
 	}
 
 	qt.nodes[2] = New(bb, qt.depth, qt)
 
 	bb = &AABB{
-		&Point{qt.boundary.center.x + qt.boundary.half.x/2, qt.boundary.center.y - qt.boundary.half.y/2, nil},
-		&Point{qt.boundary.half.x / 2, qt.boundary.half.y / 2, nil},
+		&Point{
+			x: qt.boundary.center.x + qt.boundary.half.x/2,
+			y: qt.boundary.center.y - qt.boundary.half.y/2,
+		},
+		&Point{
+			x: qt.boundary.half.x / 2,
+			y: qt.boundary.half.y / 2,
+		},
 	}
 
 	qt.nodes[3] = New(bb, qt.depth, qt)
