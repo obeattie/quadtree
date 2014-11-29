@@ -1,0 +1,16 @@
+language: go
+
+go:
+  - 1.3
+
+install:
+  - export PATH=${PATH}:${HOME}/gopath/bin
+  - go get -v -t ./...
+  - go get -v github.com/golang/lint/golint
+  - go get -v code.google.com/p/go.tools/cmd/vet
+
+script:
+  - go vet ./...
+  - go test -v ./...
+  - go test -v -race ./...
+  - golint .
